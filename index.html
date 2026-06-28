@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PV-Predict - AI-Based Predictive Maintenance for Solar PV Arrays</title>
+    <meta name="description" content="AI & Machine Learning-driven predictive maintenance platform for solar photovoltaic arrays. Monitor panel degradation, predict failures, and minimize generation downtime.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Dexie.js for IndexedDB -->
+    <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
+    <!-- Three.js & GSAP for 3D Hero background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-theme">
+    <!-- Glowing Accent Orbs for Futuristic Aesthetic -->
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+
+    <!-- Sticky Navigation Bar -->
+    <header class="navbar-container">
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="#hero" class="nav-link active">Home</a></li>
+                <li><a href="#challenges" class="nav-link">Challenges</a></li>
+                <li><a href="#architecture" class="nav-link">Architecture</a></li>
+                <li><a href="#simulations" class="nav-link">Simulations</a></li>
+                <li><a href="#dashboard" class="nav-link nav-btn-glow">Live Dashboard</a></li>
+                <li><a href="#results" class="nav-link">Results</a></li>
+                <li><a href="#roadmap" class="nav-link">Roadmap</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="#dashboard" class="btn btn-primary btn-sm header-cta">Launch SCADA</a>
+            </div>
+            <button class="mobile-nav-toggle" aria-label="Toggle Navigation">
+                <i data-lucide="menu"></i>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="hero-section">
+            <!-- Three.js 3D Background Canvas -->
+            <div id="hero-3d-canvas-container" class="hero-3d-container"></div>
+            <div class="grid-overlay"></div>
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <div class="badge-container">
+                        <span class="badge-pulse"><span class="pulse-dot"></span>Industry 4.0 Standard</span>
+                        <span class="badge-text">R.V. College of Engineering</span>
+                    </div>
+                    <h1 class="hero-title animate-gradient">
+                        AI-Based Predictive Maintenance <br>
+                        <span class="text-glow">for Solar PV Arrays</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Leveraging Artificial Intelligence, Machine Learning, and Real-Time Solar Panel Telemetry to Predict Output Degradation, Optimize Maintenance, and Maximize Energy Generation.
+                    </p>
+                    <div class="hero-ctas">
+                        <a href="#dashboard" class="btn btn-primary"><i data-lucide="layout-dashboard"></i> View Dashboard</a>
+                        <a href="#simulations" class="btn btn-secondary"><i data-lucide="play-circle"></i> Explore Simulations</a>
+                        <a href="#architecture" class="btn btn-outline"><i data-lucide="git-branch"></i> Project Architecture</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scroll-indicator">
+                <span class="scroll-mouse"><span class="scroll-wheel"></span></span>
+                <span class="scroll-text">Scroll to Explore</span>
+            </div>
+        </section>
+
+        <!-- Problem Statement Section -->
+        <section id="challenges" class="section-padding background-dark-navy">
+            <div class="container">
+                <div class="section-header center">
+                    <span class="section-pretitle">The Problem Space</span>
+                    <h2 class="section-title">Challenges in PV Solar Generation</h2>
+                    <div class="section-underline"></div>
+                    <p class="section-subtitle">
+                        Operating large-scale solar arrays requires high-efficiency performance over a 25-year lifespan. Gradual panel degradation, localized hot spots, and soil cover severely limit productivity.
+                    </p>
+                </div>
+
+                <div class="challenges-grid">
+                    <!-- Card 1 -->
+                    <div class="challenge-card">
+                        <div class="challenge-num">01</div>
+                        <div class="challenge-icon-box">
+                            <i data-lucide="zap-off"></i>
+                        </div>
+                        <h3>Unexpected Panel Outages</h3>
+                        <p>Sudden electrical faults, bypass diode short-circuits, or extreme hotspot failures lead to immediate drops in power output, making physical inspections slow and costly.</p>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="challenge-card">
+                        <div class="challenge-num">02</div>
+                        <div class="challenge-icon-box">
+                            <i data-lucide="alert-octagon"></i>
+                        </div>
+                        <h3>Generation Outage Downtime</h3>
+                        <p>Unplanned outages in sub-arrays or tracker lockups block energy export to the grid, resulting in massive financial losses and reduced generation efficiency.</p>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="challenge-card">
+                        <div class="challenge-num">03</div>
+                        <div class="challenge-icon-box">
+                            <i data-lucide="dollar-sign"></i>
+                        </div>
+                        <h3>Emergency Repair Costs</h3>
+                        <p>Dispatching maintenance crews for unscheduled truck rolls without precise diagnostic data incurs high labor costs and prolonged generation downtime.</p>
+                    </div>
+                    <!-- Card 4 -->
+                    <div class="challenge-card">
+                        <div class="challenge-num">04</div>
+                        <div class="challenge-icon-box">
+                            <i data-lucide="gauge-circle"></i>
+                        </div>
+                        <h3>Accelerated Panel Degradation</h3>
+                        <p>Failing to address localized cell defects or hotspots leads to accelerated thermal degradation, shortening a panel's standard 25-year useful life.</p>
+                    </div>
+                    <!-- Card 5 -->
+                    <div class="challenge-card">
+                        <div class="challenge-num">05</div>
+                        <div class="challenge-icon-box">
+                            <i data-lucide="eye-off"></i>
+                        </div>
+                        <h3>Manual Field Inspection Limits</h3>
+                        <p>Periodic physical site surveys using hand-held thermal cameras are labor-intensive, hazardous, and fail to spot sub-surface micro-cracks in solar cells in a timely manner.</p>
+                    </div>
+                </div>
+
+                <!-- Interactive Infographic Flow -->
+                <div class="infographic-container">
+                    <h4 class="info-title">The Downward Operational Spiral</h4>
+                    <div class="info-flow">
+                        <div class="info-step border-red">
+                            <div class="info-icon text-red animate-pulse-red"><i data-lucide="flame"></i></div>
+                            <h5>1. Hotspot Overheating</h5>
+                            <p>Localized cell defect accelerates wear</p>
+                        </div>
+                        <div class="info-arrow"><i data-lucide="chevrons-right"></i></div>
+                        <div class="info-step border-orange">
+                            <div class="info-icon text-orange"><i data-lucide="pause-circle"></i></div>
+                            <h5>2. String Outage</h5>
+                            <p>String of panels bypassed entirely</p>
+                        </div>
+                        <div class="info-arrow"><i data-lucide="chevrons-right"></i></div>
+                        <div class="info-step border-amber">
+                            <div class="info-icon text-amber"><i data-lucide="trending-up"></i></div>
+                            <h5>3. Generation Loss</h5>
+                            <p>Unsold energy and peak hour drops</p>
+                        </div>
+                        <div class="info-arrow"><i data-lucide="chevrons-right"></i></div>
+                        <div class="info-step border-yellow">
+                            <div class="info-icon text-yellow"><i data-lucide="package-x"></i></div>
+                            <h5>4. Financial Impact</h5>
+                            <p>Failed contract yield guarantees</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Solution Architecture Section -->
+        <section id="architecture" class="section-padding">
+            <div class="container">
+                <div class="section-header center">
+                    <span class="section-pretitle">Engineering Workflow</span>
+                    <h2 class="section-title">End-to-End Solution Architecture</h2>
+                    <div class="section-underline"></div>
+                    <p class="section-subtitle">
+                        Our hybrid engineering pipeline maps physical solar panel anomalies into actionable diagnostic suggestions via machine learning analytics.
+                    </p>
+                </div>
+
+                <!-- Animated Interactive Flow Diagram -->
+                <div class="architecture-diagram-container">
+                    <div class="diagram-grid">
+                        <div class="diagram-node active" id="node-1" data-node="1">
+                            <div class="node-icon"><i data-lucide="sun"></i></div>
+                            <span class="node-title">PV Solar Panel Array</span>
+                            <span class="node-desc">Operational modules in solar farm</span>
+                            <div class="pulse-ring"></div>
+                        </div>
+
+                        <div class="diagram-connector"><div class="connector-line"></div><i data-lucide="arrow-right" class="connector-arrow"></i></div>
+
+                        <div class="diagram-node" id="node-2" data-node="2">
+                            <div class="node-icon"><i data-lucide="cpu"></i></div>
+                            <span class="node-title">Virtual Sensors</span>
+                            <span class="node-desc">Temperature and Output Current streams</span>
+                        </div>
+
+                        <div class="diagram-connector"><div class="connector-line"></div><i data-lucide="arrow-right" class="connector-arrow"></i></div>
+
+                        <div class="diagram-node" id="node-3" data-node="3">
+                            <div class="node-icon"><i data-lucide="binary"></i></div>
+                            <span class="node-title">MATLAB / Simulink</span>
+                            <span class="node-desc">Signal processing & physics-based modeling</span>
+                        </div>
+
+                        <div class="diagram-connector"><div class="connector-line"></div><i data-lucide="arrow-right" class="connector-arrow"></i></div>
+
+                        <div class="diagram-node" id="node-4" data-node="4">
+                            <div class="node-icon"><i data-lucide="brain"></i></div>
+                            <span class="node-title">Machine Learning Model</span>
+                            <span class="node-desc">Random Forest (100 trees) &amp; Decision Tree (depth-6) classifiers</span>
+                        </div>
+                    </div>
+
+                    <div class="diagram-vertical-connector"><div class="connector-vertical-line"></div><i data-lucide="arrow-down" class="connector-arrow"></i></div>
+
+                    <div class="diagram-grid reverse">
+                        <div class="diagram-node" id="node-7" data-node="7">
+                            <div class="node-icon"><i data-lucide="wrench"></i></div>
+                            <span class="node-title">Maintenance Recommendation</span>
+                            <span class="node-desc">Optimal repair scheduling & diagnostics</span>
+                        </div>
+
+                        <div class="diagram-connector reverse"><div class="connector-line"></div><i data-lucide="arrow-left" class="connector-arrow"></i></div>
+
+                        <div class="diagram-node" id="node-6" data-node="6">
+                            <div class="node-icon"><i data-lucide="bell"></i></div>
+                            <span class="node-title">Dashboard & Alerts</span>
+                            <span class="node-desc">Real-time SCADA UI warnings</span>
+                        </div>
+
+                        <div class="diagram-connector reverse"><div class="connector-line"></div><i data-lucide="arrow-left" class="connector-arrow"></i></div>
+
+                        <div class="diagram-node" id="node-5" data-node="5">
+                            <div class="node-icon"><i data-lucide="activity"></i></div>
+                            <span class="node-title">Failure Prediction Engine</span>
+                            <span class="node-desc">Remaining Useful Life (RUL) in Years</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info panel for selected node -->
+                <div class="architecture-info-panel" id="architecture-detail-box">
+                    <div class="panel-header">
+                        <i data-lucide="info" class="text-cyan"></i>
+                        <h4 id="architecture-detail-title">PV Solar Panel Array (Active Stage)</h4>
+                    </div>
+                    <p id="architecture-detail-desc">Operational PV modules configured in strings and tracking systems. Operating variables are continuously stressed by weather conditions, wind loads, and thermal stress, necessitating ongoing health monitoring.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MATLAB Simulations Section -->
+        <section id="simulations" class="section-padding background-dark-navy">
+            <div class="container">
+                <div class="section-header center">
+                    <span class="section-pretitle">Simulation Suite</span>
+                    <h2 class="section-title">MATLAB & Simulink Core Simulations</h2>
+                    <div class="section-underline"></div>
+                    <p class="section-subtitle">
+                        Explore our pre-configured industrial simulation studies. Select a card to load the model outputs directly into the interactive dashboard console below.
+                    </p>
+                </div>
+
+                <div class="simulations-grid">
+                    <!-- Simulation Card 1 -->
+                    <div class="simulation-card active" data-sim="health">
+                        <div class="sim-card-header">
+                            <div class="sim-badge cyan">ACTIVE</div>
+                            <div class="sim-icon-box"><i data-lucide="activity"></i></div>
+                        </div>
+                        <h3>PV Module Health Monitoring</h3>
+                        <p class="sim-desc">
+                            Processes raw environmental sensor streams (Module Temperature and Output Current) to compute the panel's active health score and degradation status.
+                        </p>
+                        <div class="sim-outputs">
+                            <div class="sim-output-tag"><i data-lucide="heart"></i> Capacity Index: <span class="text-cyan">Dynamic</span></div>
+                            <div class="sim-output-tag"><i data-lucide="shield-check"></i> Status: <span class="text-emerald">Safe Range</span></div>
+                            <div class="sim-output-tag"><i data-lucide="trending-up"></i> Trends: <span class="text-blue">Continuous Telemetry</span></div>
+                        </div>
+                        <button class="btn btn-outline btn-full btn-run-sim">
+                            <i data-lucide="play" class="play-ic"></i> Loaded in Dashboard
+                        </button>
+                    </div>
+
+                    <!-- Simulation Card 2 -->
+                    <div class="simulation-card" data-sim="failure">
+                        <div class="sim-card-header">
+                            <div class="sim-badge">STANDBY</div>
+                            <div class="sim-icon-box"><i data-lucide="brain-circuit"></i></div>
+                        </div>
+                        <h3>AI Failure Prediction</h3>
+                        <p class="sim-desc">
+                            Feeds 15 engineered features (Current_Drop_Pct, VOC_Ratio, Temp_Zscore, etc.) into trained Decision Tree (depth-6) and Random Forest (100 trees) classifiers to predict structural breakdowns before they occur.
+                        </p>
+                        <div class="sim-outputs">
+                            <div class="sim-output-tag"><i data-lucide="percent"></i> OOB Accuracy: <span class="text-cyan">98.96%</span></div>
+                            <div class="sim-output-tag"><i data-lucide="grid"></i> Confusion Matrix: <span class="text-blue">Loaded</span></div>
+                            <div class="sim-output-tag"><i data-lucide="alert-triangle"></i> Probability: <span class="text-red">Anomalous Spike</span></div>
+                        </div>
+                        <button class="btn btn-outline btn-full btn-run-sim">
+                            <i data-lucide="play" class="play-ic"></i> Run AI Prediction Simulation
+                        </button>
+                    </div>
+
+                    <!-- Simulation Card 3 -->
+                    <div class="simulation-card" data-sim="rul">
+                        <div class="sim-card-header">
+                            <div class="sim-badge">STANDBY</div>
+                            <div class="sim-icon-box"><i data-lucide="hourglass"></i></div>
+                        </div>
+                        <h3>Remaining Useful Life (RUL)</h3>
+                        <p class="sim-desc">
+                            Applies Kalman Filtering on electrical output signals and exponential degradation models to project degradation, estimating remaining years before the panel drops below 80% warranty capacity.
+                        </p>
+                        <div class="sim-outputs">
+                            <div class="sim-output-tag"><i data-lucide="line-chart"></i> RUL Curve: <span class="text-cyan">Degradation</span></div>
+                            <div class="sim-output-tag"><i data-lucide="history"></i> Degradation Rate: <span class="text-orange">0.5%-0.8% Annually</span></div>
+                            <div class="sim-output-tag"><i data-lucide="calendar"></i> Warranty Period: <span class="text-red">Est. 25 Years</span></div>
+                        </div>
+                        <button class="btn btn-outline btn-full btn-run-sim">
+                            <i data-lucide="play" class="play-ic"></i> Run RUL Forecasting Simulation
+                        </button>
+                    </div>
+
+                    <!-- Simulation Card 4 -->
+                    <div class="simulation-card" data-sim="downtime">
+                        <div class="sim-card-header">
+                            <div class="sim-badge">STANDBY</div>
+                            <div class="sim-icon-box"><i data-lucide="bar-chart-3"></i></div>
+                        </div>
+                        <h3>Downtime Reduction Analysis</h3>
+                        <p class="sim-desc">
+                            Contrast comparison studies evaluating traditional manual inspection schedules and calendar cleanings versus AI-predictive module alerts that prevent multi-day string outages.
+                        </p>
+                        <div class="sim-outputs">
+                            <div class="sim-output-tag"><i data-lucide="clock"></i> Outages Prevented: <span class="text-cyan">45 Days Saved</span></div>
+                            <div class="sim-output-tag"><i data-lucide="zap"></i> Optimization: <span class="text-blue">94% Efficiency</span></div>
+                        </div>
+                        <button class="btn btn-outline btn-full btn-run-sim">
+                            <i data-lucide="play" class="play-ic"></i> Run Downtime Analysis
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive SCADA/Industry 4.0 Dashboard -->
+        <section id="dashboard" class="section-padding dashboard-section">
+            <div class="container-fluid dashboard-container">
+                
+                <!-- SCADA Dashboard Header -->
+                <div class="dashboard-header">
+                    <div class="scada-meta">
+                        <div class="scada-pulse"></div>
+                        <div>
+                            <span class="scada-title">PV ARRAY #12 MONITORING CONSOLE</span>
+                            <span class="scada-sub">Industrial Internet of Things (IIoT) Digital Twin</span>
+                        </div>
+                    </div>
+                    
+                    <div class="db-status-badge" id="db-status-badge" style="display: flex; align-items: center; gap: 6px; font-size: 11px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); padding: 4px 8px; border-radius: 20px; color: #EF4444; margin-left: auto; margin-right: 16px; transition: all 0.3s ease;">
+                        <span id="db-status-dot" style="width: 6px; height: 6px; background: #EF4444; border-radius: 50%; box-shadow: 0 0 8px #EF4444; transition: all 0.3s ease;"></span>
+                        <i data-lucide="database" style="width: 12px; height: 12px;"></i> <span id="db-status-text-val">DB DISCONNECTED</span>
+                    </div>
+                    
+                    <div class="dashboard-mode-selector">
+                        <span class="mode-label">Active Simulation Profile:</span>
+                        <div class="current-mode-tag" id="active-mode-display">
+                            <i data-lucide="activity"></i> PV Module Health Monitoring
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Content Grid -->
+                <div class="dashboard-grid-layout">
+                    
+                    <!-- Left: Control & Telemetry Panel -->
+                    <div class="dashboard-panel control-panel">
+                        <div class="panel-title-wrapper">
+                            <i data-lucide="sliders-horizontal" class="panel-icon text-cyan"></i>
+                            <h3>Sensor Telemetry Controller</h3>
+                        </div>
+                        
+                        <!-- Console Tabs -->
+                        <div class="control-panel-tabs">
+                            <button class="tab-btn active" id="tab-btn-sliders"><i data-lucide="sliders" class="play-ic"></i> Sliders</button>
+                            <button class="tab-btn" id="tab-btn-csv"><i data-lucide="file-spreadsheet" class="play-ic"></i> CSV Stream</button>
+                            <button class="tab-btn" id="tab-btn-db"><i data-lucide="database" class="play-ic"></i> DB History</button>
+                        </div>
+
+                        <!-- Pane 1: Manual Sliders -->
+                        <div class="control-pane" id="sliders-control-pane">
+                            <p class="panel-desc">Drag the sliders to simulate PV lamination machinery degradation. Notice how the predictive AI logic registers anomalies in real-time.</p>
+
+                            <!-- Slider 1 -->
+                            <div class="control-group">
+                                <div class="control-info">
+                                    <label for="slider-temp">Module Temperature (°C)</label>
+                                    <span class="control-val font-display" id="val-temp">45.0</span>
+                                </div>
+                                <input type="range" id="slider-temp" min="20" max="130" value="45" class="slider slider-temp">
+                                <div class="control-bounds">
+                                    <span>20°C (Min)</span>
+                                    <span>Normal: 20-80</span>
+                                    <span>130°C (Max)</span>
+                                </div>
+                            </div>
+
+                            <!-- Slider 2 -->
+                            <div class="control-group">
+                                <div class="control-info">
+                                    <label for="slider-volt">Panel Voltage (V)</label>
+                                    <span class="control-val font-display" id="val-volt">38.0</span>
+                                </div>
+                                <input type="range" id="slider-volt" min="30" max="45" step="0.1" value="38.0" class="slider slider-volt">
+                                <div class="control-bounds">
+                                    <span>30.0V (Min)</span>
+                                    <span>Normal: 36.0-40.0</span>
+                                    <span>45.0V (Max)</span>
+                                </div>
+                            </div>
+
+                            <!-- Slider 3 -->
+                            <div class="control-group">
+                                <div class="control-info">
+                                    <label for="slider-curr">Output Current (A)</label>
+                                    <span class="control-val font-display" id="val-curr">8.5</span>
+                                </div>
+                                <input type="range" id="slider-curr" min="1" max="25" step="0.5" value="8.5" class="slider slider-curr">
+                                <div class="control-bounds">
+                                    <span>1.0A (Min)</span>
+                                    <span>Normal: 5.0-15.0</span>
+                                    <span>25.0A (Max)</span>
+                                </div>
+                            </div>
+
+                            <!-- Slider 4 -->
+                            <div class="control-group">
+                                <div class="control-info">
+                                    <label for="slider-irrad">Solar Irradiance (W/m²)</label>
+                                    <span class="control-val font-display" id="val-irrad">759.0</span>
+                                </div>
+                                <input type="range" id="slider-irrad" min="0" max="1200" step="5" value="759" class="slider slider-irrad">
+                                <div class="control-bounds">
+                                    <span>0 W/m² (Min)</span>
+                                    <span>Normal: 600-1000</span>
+                                    <span>1200 W/m² (Max)</span>
+                                </div>
+                            </div>
+
+                            <div class="control-panel-footer">
+                                <button class="btn btn-outline btn-sm btn-full" id="btn-reset-sensors">
+                                    <i data-lucide="rotate-ccw"></i> Reset to Normal Conditions
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Pane 2: CSV Hardware Data Streamer -->
+                        <div class="control-pane hidden" id="csv-control-pane">
+                            <p class="panel-desc">Paste your physical sensor data below. Stream the rows second-by-second directly into our predictive SCADA terminal.</p>
+                            
+                            <div style="margin-bottom: 16px;">
+                                <textarea id="csv-data-input" rows="8" style="font-family: monospace; font-size: 10px; line-height: 1.3; background: rgba(7, 11, 25, 0.6); color: var(--color-accent); border: var(--border-light); width: 100%; padding: 8px; border-radius: var(--border-radius-sm); outline: none; resize: vertical;">Timestamp,Temperature_C,Voltage_V,Current_A,Panel_Health,Failure_Probability,Status
+1,42,38.0,7.2,98,2,Normal
+2,44,38.0,7.5,97,3,Normal
+3,45,38.0,7.8,96,4,Normal
+4,47,38.0,8.0,95,5,Normal
+5,50,38.0,8.2,93,7,Normal
+6,54,38.0,8.5,90,10,Normal
+7,58,38.0,9.0,87,15,Warning
+8,62,38.0,9.8,83,20,Warning
+9,66,38.0,10.5,78,28,Warning
+10,70,38.0,11.0,72,35,Warning
+11,74,38.0,11.8,65,45,Warning
+12,78,38.0,12.5,58,55,Warning
+13,82,38.0,13.2,50,65,Critical
+14,86,38.0,14.0,42,75,Critical
+15,90,38.0,15.0,35,82,Critical
+16,95,38.0,16.0,28,88,Critical
+17,100,38.0,17.0,20,93,Failure
+18,105,38.0,18.5,15,96,Failure
+19,110,38.0,20.0,10,98,Failure
+20,115,38.0,22.0,5,99,Failure</textarea>
+                            </div>
+
+                            <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                                <button class="btn btn-primary btn-sm" id="btn-play-csv" style="flex: 1;"><i data-lucide="play"></i> Stream CSV</button>
+                                <button class="btn btn-outline btn-sm" id="btn-stop-csv" disabled style="flex: 1;"><i data-lucide="square"></i> Stop</button>
+                            </div>
+
+                            <div style="font-size: 11px; color: var(--color-text-secondary); text-align: center; border: 1px solid rgba(255,255,255,0.03); padding: 8px; border-radius: var(--border-radius-sm); background: rgba(0,0,0,0.25); display: flex; flex-direction: column; gap: 4px;">
+                                <div>Status: <strong id="csv-status-text" class="text-cyan">IDLE</strong></div>
+                                <div id="csv-progress-text">Stream progress: 0/20 packets</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Pane 3: Database History -->
+                        <div class="control-pane hidden" id="db-control-pane">
+                            <p class="panel-desc">Saved telemetry logs in the local browser database (IndexedDB). Reloads previous metrics on selection.</p>
+                            <div class="db-logs-container" style="max-height: 180px; overflow-y: auto; font-size: 10px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; background: rgba(0,0,0,0.25);">
+                                <table style="width: 100%; border-collapse: collapse; text-align: left;" id="db-history-table">
+                                    <thead>
+                                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); color: var(--color-text-secondary);">
+                                            <th style="padding: 6px 8px;">Time</th>
+                                            <th style="padding: 6px 8px;">Temp</th>
+                                            <th style="padding: 6px 8px;">Curr</th>
+                                            <th style="padding: 6px 8px;">Health</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="db-history-tbody">
+                                        <!-- Dynamically inserted rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn btn-primary btn-sm" id="btn-load-db" style="flex: 1;" disabled><i data-lucide="download"></i> Load Selected</button>
+                                <button class="btn btn-outline btn-sm" id="btn-clear-db" style="flex: 1;"><i data-lucide="trash-2"></i> Clear DB</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Middle: Visual Telemetry Room -->
+                    <div class="dashboard-panel telemetry-panel">
+                        <div class="panel-title-wrapper">
+                            <i data-lucide="gauge" class="panel-icon text-cyan"></i>
+                            <h3>Real-Time Telemetry Gauges</h3>
+                        </div>
+
+                        <div class="gauges-container">
+                            <!-- Gauge 1 -->
+                            <div class="gauge-card">
+                                <div class="gauge-wrapper">
+                                    <svg class="radial-gauge-svg" viewBox="0 0 100 100">
+                                        <circle class="gauge-bg" cx="50" cy="50" r="40"></circle>
+                                        <circle class="gauge-progress" id="gauge-temp-circle" cx="50" cy="50" r="40" stroke-dasharray="251.2" stroke-dashoffset="251.2"></circle>
+                                    </svg>
+                                    <div class="gauge-center">
+                                        <span class="gauge-val font-display" id="gauge-temp-num">45</span>
+                                        <span class="gauge-unit">°C</span>
+                                    </div>
+                                </div>
+                                <span class="gauge-name">Module Temp</span>
+                            </div>
+
+                            <!-- Gauge 2 -->
+                            <div class="gauge-card">
+                                <div class="gauge-wrapper">
+                                    <svg class="radial-gauge-svg" viewBox="0 0 100 100">
+                                        <circle class="gauge-bg" cx="50" cy="50" r="40"></circle>
+                                        <circle class="gauge-progress" id="gauge-volt-circle" cx="50" cy="50" r="40" stroke-dasharray="251.2" stroke-dashoffset="251.2"></circle>
+                                    </svg>
+                                    <div class="gauge-center">
+                                        <span class="gauge-val font-display" id="gauge-volt-num">38.0</span>
+                                        <span class="gauge-unit">V</span>
+                                    </div>
+                                </div>
+                                <span class="gauge-name">Panel Voltage</span>
+                            </div>
+
+                            <!-- Gauge 3 -->
+                            <div class="gauge-card">
+                                <div class="gauge-wrapper">
+                                    <svg class="radial-gauge-svg" viewBox="0 0 100 100">
+                                        <circle class="gauge-bg" cx="50" cy="50" r="40"></circle>
+                                        <circle class="gauge-progress" id="gauge-curr-circle" cx="50" cy="50" r="40" stroke-dasharray="251.2" stroke-dashoffset="251.2"></circle>
+                                    </svg>
+                                    <div class="gauge-center">
+                                        <span class="gauge-val font-display" id="gauge-curr-num">8.5</span>
+                                        <span class="gauge-unit">A</span>
+                                    </div>
+                                </div>
+                                <span class="gauge-name">Output Current</span>
+                            </div>
+
+                            <!-- Gauge 4 -->
+                            <div class="gauge-card">
+                                <div class="gauge-wrapper">
+                                    <svg class="radial-gauge-svg" viewBox="0 0 100 100">
+                                        <circle class="gauge-bg" cx="50" cy="50" r="40"></circle>
+                                        <circle class="gauge-progress" id="gauge-irrad-circle" cx="50" cy="50" r="40" stroke-dasharray="251.2" stroke-dashoffset="251.2"></circle>
+                                    </svg>
+                                    <div class="gauge-center">
+                                        <span class="gauge-val font-display" id="gauge-irrad-num">759</span>
+                                        <span class="gauge-unit">W/m²</span>
+                                    </div>
+                                </div>
+                                <span class="gauge-name">Solar Irradiance</span>
+                            </div>
+                        </div>
+
+                        <!-- KPI deck -->
+                        <div class="dashboard-kpis-grid">
+                             <div class="kpi-micro-card">
+                                <span class="kpi-lbl">Panel Health</span>
+                                <span class="kpi-num font-display text-emerald" id="kpi-health">98%</span>
+                            </div>
+                            <div class="kpi-micro-card">
+                                <span class="kpi-lbl">Failure Probability</span>
+                                <span class="kpi-num font-display text-cyan" id="kpi-prob">2%</span>
+                            </div>
+                             <div class="kpi-micro-card">
+                                <span class="kpi-lbl">Remaining Useful Life</span>
+                                <span class="kpi-num font-display text-blue" id="kpi-rul">25.0 Yrs</span>
+                            </div>
+                            <div class="kpi-micro-card">
+                                <span class="kpi-lbl">Downtime Saved</span>
+                                <span class="kpi-num font-display text-purple" id="kpi-downtime">12.0 Days</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: AI State & Recommendation Console -->
+                    <div class="dashboard-panel recommendation-panel">
+                        <!-- AI Predictive Status Indicator -->
+                        <div class="ai-status-wrapper">
+                            <div class="ai-status-card healthy" id="ai-status-indicator">
+                                <div class="status-pulse-light"></div>
+                                <div class="status-text-block">
+                                    <span class="status-subtitle">AI SYSTEM STATUS</span>
+                                    <span class="status-title font-display" id="ai-status-title">NORMAL</span>
+                                </div>
+                                <div class="status-icon"><i data-lucide="shield-check" id="ai-status-icon"></i></div>
+                            </div>
+                        </div>
+
+                        <!-- Maintenance Recommendation List -->
+                        <div class="recommendations-box">
+                            <h4><i data-lucide="tool" class="text-cyan"></i> Actionable Diagnostics</h4>
+                            <div class="rec-list" id="recommendation-list">
+                                <div class="rec-item text-success">
+                                    <i data-lucide="check-circle-2"></i>
+                                    <div>
+                                        <strong>System Balanced</strong>
+                                        <p>No issues detected on active line bearings or cooling channels.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- System Logs Output Box -->
+                        <div class="logs-wrapper">
+                            <div class="logs-header">
+                                <span><i data-lucide="terminal" class="text-cyan"></i> telemetry.log</span>
+                                <span class="btn-clear-logs" id="clear-logs">Clear</span>
+                            </div>
+                            <div class="logs-body" id="dashboard-logs">
+                                <p>[21:21:10] SYSTEM INITIALIZED: PV SCADA active...</p>
+                                <p>[21:21:15] ML Model loaded: Random Forest (100 trees, OOB=98.96%) + Decision Tree (depth=6, 36 leaves) active.</p>
+                                <p class="text-success">[21:21:18] Telemetry OK: All variables in threshold boundaries.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Dynamic Trend Plot -->
+                <div class="dashboard-panel chart-panel">
+                    <div class="chart-panel-header">
+                        <div class="panel-title-wrapper">
+                            <i data-lucide="line-chart" class="panel-icon text-cyan"></i>
+                            <h3>Visual Analytics & Trend Projection Engine</h3>
+                        </div>
+                        <div class="chart-toggles">
+                            <button class="btn btn-outline btn-sm active" id="btn-toggle-telemetry">Live Telemetry</button>
+                            <button class="btn btn-outline btn-sm" id="btn-toggle-model">Simulation Curves</button>
+                        </div>
+                    </div>
+                    <div class="chart-canvas-container">
+                        <canvas id="scadaLiveChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Results Section -->
+        <section id="results" class="section-padding">
+            <div class="container">
+                <div class="section-header center">
+                    <span class="section-pretitle">Metrics & Benchmarks</span>
+                    <h2 class="section-title">Project Results & Performance Outcomes</h2>
+                    <div class="section-underline"></div>
+                    <p class="section-subtitle">
+                        Quantified empirical achievements demonstrating standard system operation outcomes against our ML-guided predictive framework.
+                    </p>
+                </div>
+
+                <div class="results-grid">
+                    <!-- Text and Metrics Cards -->
+                    <div class="results-info">
+                        <div class="results-text-block">
+                            <h3>Significant Efficiency Multipliers</h3>
+                            <p>Using real-time telemetry gathered across multiple virtual sensors, the machine learning system dynamically identifies degradation trends that calendar-based methods overlook completely.</p>
+                        </div>
+                        
+                        <div class="kpi-outcomes-grid">
+                            <div class="kpi-outcome-card">
+                                <span class="kpi-val">98.96%</span>
+                                <span class="kpi-name">OOB Score (Random Forest)</span>
+                            </div>
+                            <div class="kpi-outcome-card">
+                                <span class="kpi-val">25%</span>
+                                <span class="kpi-name">Outage Downtime reduction</span>
+                            </div>
+                            <div class="kpi-outcome-card">
+                                <span class="kpi-val">20%</span>
+                                <span class="kpi-name">PV Panel Lifetime extension</span>
+                            </div>
+                            <div class="kpi-outcome-card">
+                                <span class="kpi-val">18%</span>
+                                <span class="kpi-name">Reduced Field Maintenance Cost</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Comparison chart -->
+                    <div class="results-chart-box dashboard-panel">
+                        <h4>Annual Outage Impact (Days Saved)</h4>
+                        <p class="panel-desc">Comparison of maintenance methods over a 12-month validation cycle across a 10MW solar installation site.</p>
+                        <div class="results-canvas-container">
+                            <canvas id="resultsComparisonChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Stack Section -->
+        <section id="techstack" class="section-padding background-dark-navy">
+            <div class="container">
+                <div class="section-header center">
+                    <span class="section-pretitle">Core Stack</span>
+                    <h2 class="section-title">The Engineering Toolbox</h2>
+                    <div class="section-underline"></div>
+                    <p class="section-subtitle">
+                        Built with robust mathematical modelling, signal processing frameworks, and advanced classification modeling toolkits.
+                    </p>
+                </div>
+
+                <div class="tech-grid">
+                    <!-- Tech Item 1 -->
+                    <div class="tech-item-card">
+                        <div class="tech-icon"><i data-lucide="variable"></i></div>
+                        <h4>MATLAB Core</h4>
+                        <p>Mathematical calculations, fast Fourier transform filters, and data manipulation pipelines.</p>
+                    </div>
+                    <!-- Tech Item 2 -->
+                    <div class="tech-item-card">
+                        <div class="tech-icon"><i data-lucide="box"></i></div>
+                        <h4>Simulink</h4>
+                        <p>Visual workspace for system dynamics modeling, virtual sensor deployment, and physical simulation loops.</p>
+                    </div>
+                    <!-- Tech Item 3 -->
+                    <div class="tech-item-card">
+                        <div class="tech-icon"><i data-lucide="brain-circuit"></i></div>
+                        <h4>Machine Learning</h4>
+                        <p>Statistical algorithms trained to recognize telemetry patterns mapping directly to mechanical stress.</p>
+                    </div>
+                    <!-- Tech Item 4 -->
+                    <div class="tech-item-card">
+                        <div class="tech-icon"><i data-lucide="git-merge"></i></div>
+                        <h4>Decision Trees</h4>
+                        <p>Depth-6 interpretable classifier with 36 leaf nodes achieving 0.60 F1-score on Warning class (95% recall).</p>
+                    </div>
+                    <!-- Tech Item 5 -->
+                    <div class="tech-item-card">
+                        <div class="tech-icon"><i data-lucide="network"></i></div>
+                        <h4>Random Forest</h4>
+                        <p>100-tree ensemble trained on 342,912 samples with 15 features. OOB score: 98.96%, per-tree mean accuracy: 99.81%.</p>
+                    </div>
+                    <!-- Tech Item 6 -->
+                    <div class="tech-item-card">
+                        <div class="tech-icon"><i data-lucide="bar-chart"></i></div>
+                        <h4>Data Analytics</h4>
+                        <p>Telemetry processing filters, irradiance calculations, and output current trend analysis.</p>
+                    </div>
+                    <!-- Tech Item 7 -->
+                    <div class="tech-item-card">
+                        <div class="tech-icon"><i data-lucide="presentation"></i></div>
+                        <h4>Dashboard SCADA</h4>
+                        <p>Industrial web control systems displaying real-time system diagnostics and machine metrics.</p>
+                    </div>
+                    <!-- Tech Item 8 -->
+                    <div class="tech-item-card">
+                        <div class="tech-icon"><i data-lucide="wrench"></i></div>
+                        <h4>Predictive Maint.</h4>
+                        <p>Combining RUL forecasts, diagnostic triggers, and optimal scheduling modules.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Future Scope / Roadmap Section -->
+        <section id="roadmap" class="section-padding">
+            <div class="container">
+                <div class="section-header center">
+                    <span class="section-pretitle">Strategic Vision</span>
+                    <h2 class="section-title">Project Evolution Roadmap</h2>
+                    <div class="section-underline"></div>
+                    <p class="section-subtitle">
+                        From basic software simulation algorithms to full scale hardware and production-ready IIoT deployments.
+                    </p>
+                </div>
+
+                <div class="timeline-container">
+                    <div class="timeline-line"></div>
+                    
+                    <!-- Phase 1 -->
+                    <div class="timeline-node">
+                        <div class="timeline-badge"><i data-lucide="binary"></i></div>
+                        <div class="timeline-content">
+                            <span class="timeline-phase">PHASE 1</span>
+                            <h3>MATLAB Simulation</h3>
+                            <p>Designing physical plant model in Simulink. Injecting structural degradations to export high-fidelity validation data datasets.</p>
+                        </div>
+                    </div>
+
+                    <!-- Phase 2 -->
+                    <div class="timeline-node">
+                        <div class="timeline-badge"><i data-lucide="box"></i></div>
+                        <div class="timeline-content">
+                            <span class="timeline-phase">PHASE 2</span>
+                            <h3>Hardware Prototype</h3>
+                            <p>Assembling a micro-scale conveyor model with integrated DC motors, bearings, and temperature modules to mimic a real assembly track.</p>
+                        </div>
+                    </div>
+
+                    <!-- Phase 3 -->
+                    <div class="timeline-node">
+                        <div class="timeline-badge"><i data-lucide="cpu"></i></div>
+                        <div class="timeline-content">
+                            <span class="timeline-phase">PHASE 3</span>
+                            <h3>ESP32 Sensor Integration</h3>
+                            <p>Deploying high-speed ESP32 boards equipped with shunt current sensors and DS18B20 temperature probes to pipe analog telemetry.</p>
+                        </div>
+                    </div>
+
+                    <!-- Phase 4 -->
+                    <div class="timeline-node">
+                        <div class="timeline-badge"><i data-lucide="cloud"></i></div>
+                        <div class="timeline-content">
+                            <span class="timeline-phase">PHASE 4</span>
+                            <h3>Cloud-Based Monitoring</h3>
+                            <p>Configuring MQTT brokers to route sensor payloads securely into cloud-based databases for continuous remote accessibility.</p>
+                        </div>
+                    </div>
+
+                    <!-- Phase 5 -->
+                    <div class="timeline-node">
+                        <div class="timeline-badge"><i data-lucide="smartphone"></i></div>
+                        <div class="timeline-content">
+                            <span class="timeline-phase">PHASE 5</span>
+                            <h3>Mobile Application</h3>
+                            <p>Developing lightweight responsive diagnostic applications for factory engineers to receive real-time push alerts on equipment states.</p>
+                        </div>
+                    </div>
+
+                    <!-- Phase 6 -->
+                    <div class="timeline-node">
+                        <div class="timeline-badge"><i data-lucide="layers"></i></div>
+                        <div class="timeline-content">
+                            <span class="timeline-phase">PHASE 6</span>
+                            <h3>Digital Twin Technology</h3>
+                            <p>Synthesizing 3D WebGL plant representations displaying synchronized spatial sensor mapping in response to real-time physical telemetry.</p>
+                        </div>
+                    </div>
+
+                    <!-- Phase 7 -->
+                    <div class="timeline-node">
+                        <div class="timeline-badge"><i data-lucide="factory"></i></div>
+                        <div class="timeline-content">
+                            <span class="timeline-phase">PHASE 7</span>
+                            <h3>Industrial Deployment</h3>
+                            <p>Adapting interface protocols (Modbus, OPC UA) to pipe telemetry directly from production lines into our ML diagnostic pipelines.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="container footer-container">
+            <div class="footer-brand">
+                <div style="font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 700; color: var(--color-accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                    <i data-lucide="graduation-cap" style="color: var(--color-accent);"></i> R.V. College of Engineering
+                </div>
+                <p>Academic research collaboration & predictive maintenance system designed for optimized utility-scale Solar PV Arrays. Minimized outage downtime. Advanced digital twin degradation analytics.</p>
+            </div>
+            
+            <div class="footer-links-grid">
+                <div>
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="#hero">Overview</a></li>
+                        <li><a href="#challenges">Challenges</a></li>
+                        <li><a href="#architecture">Architecture</a></li>
+                        <li><a href="#simulations">Simulations</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Interactive Console</h4>
+                    <ul>
+                        <li><a href="#dashboard">Live SCADA</a></li>
+                        <li><a href="#dashboard">Sensors</a></li>
+                        <li><a href="#dashboard">Trend Plot</a></li>
+                        <li><a href="#results">Validation Results</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Project Details</h4>
+                    <ul>
+                        <li><a href="#techstack">Tech Stack</a></li>
+                        <li><a href="#roadmap">Evolution Timeline</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container footer-bottom-flex">
+                <p>&copy; 2026 PV Project. Developed in partnership with R.V. College of Engineering. All Rights Reserved.</p>
+                <div class="footer-legal">
+                    <span>Enterprise Solution Ready</span>
+                    <span class="footer-dot"></span>
+                    <span>Industry 4.0 Standard</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="hero-3d.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
